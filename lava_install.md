@@ -170,14 +170,19 @@ cp go/bin/lavad .lava/cosmovisor/genesis/bin/
 ```
 
 ## 10. Скачиваем и распаковываем Snapshot/StateSync
-
+</br>
+    
 <details>
   <summary>Использовать StateSync. Быстро, легко. Нажмите, чтобы показать</summary>
   Выполните команду:
 
-  `curl https://raw.githubusercontent.com/Dr0ff/Useful-scripts/refs/heads/main/lava_st_sync.sh | bash`
+  ``
+  curl https://raw.githubusercontent.com/Dr0ff/Useful-scripts/refs/heads/main/lava_st_sync.sh | bash``
  
  </details>
+
+</br>
+
  <details>
      <summary>Использовать Snapshot. Сложнее. Нажмите, чтобы показать</summary>
   1. Останавливаем ноду и сохраняем файл ноды
