@@ -169,8 +169,17 @@ mkdir -p ~/.lava/cosmovisor/upgrades
 cp go/bin/lavad .lava/cosmovisor/genesis/bin/
 ```
 
-## 10. Скачиваем и распаковываем Snapshot
+## 10. Скачиваем и распаковываем Snapshot/StateSync
+
+<details>
+  <summary>Использовать StateSync. Быстро, легко. Нажмите, чтобы показать</summary>
+  Выполните команду:
+
+  `curl https://raw.githubusercontent.com/Dr0ff/Useful-scripts/refs/heads/main/lava_st_sync.sh | bash`
  
+ </details>
+ <details>
+     <summary>Использовать Snapshot. Сложнее. Нажмите, чтобы показать</summary>
   1. Останавливаем ноду и сохраняем файл ноды
 
 ```bash
@@ -195,7 +204,7 @@ https://itrocket.net/services/mainnet/lava/#snap
 ```bash
 mv $HOME/.lava/priv_validator_state.json.backup $HOME/.lava/data/priv_validator_state.json
 ```
-
+ 
 ## 11. Запуск и проверка ноды
 
   1. Делаем пробный запуск ноды:
@@ -209,6 +218,7 @@ lavad start
 sudo systemctl start lava.service
 sudo journalctl -u lava -f --output cat
 ```
+</details>
 
 ## Huge Thanks to ITROCKET for amazing tool and contributions!
 Check it out: [https://itrocket.net/](https://itrocket.net/)
