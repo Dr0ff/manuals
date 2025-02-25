@@ -58,7 +58,7 @@ lavad version
 ```
 **Если команда выводит корректную версию Lava, установка прошла успешно!*
 
-## 5. Инициализация ноды
+## 4. Инициализация ноды
 
 Выполните следующую команду, заменив `YOUR_MONIKER` на имя вашей ноды:
 
@@ -66,7 +66,7 @@ lavad version
 lavad init "YOUR_MONIKER" --chain-id lava-mainnet-1
 ```
 
-## 6. Выполним настройки ноды
+## 5. Выполним настройки ноды
 
 1. Тонкие настройки работы ноды:
 
@@ -86,15 +86,6 @@ sed -i \
   $HOME/.lava/config/config.toml
 ```
 
-2. Добавим seed и peer:
-
-```bash
-SEEDS="19822a55dcd3b5a4e8a4d4911d0b78e001b93cf7@lava-mainnet-seed.itrocket.net:28656"
-PEERS="0d67bedc7f929200d52c8724dfc50f848661f9ba@lava-mainnet-peer.itrocket.net:28656,8d28c38d956384510558664f5897a383b7529699@136.243.95.31:29156"
-sed -i -e "/^\[p2p\]/,/^\[/{s/^[[:space:]]*seeds *=.*/seeds = \"$SEEDS\"/}" \
-       -e "/^\[p2p\]/,/^\[/{s/^[[:space:]]*persistent_peers *=.*/persistent_peers = \"$PEERS\"/}" $HOME/.lava/config/config.toml
-```
-
 3. Настройка Pruning:
 
 ```bash
@@ -111,7 +102,7 @@ sed -i -e "s/prometheus = false/prometheus = true/" $HOME/.lava/config/config.to
 sed -i -e "s/^indexer *=.*/indexer = \"null\"/" $HOME/.lava/config/config.toml
 ```
 
-## 7. Скачаем genesis.json и addrbook.json
+## 6. Скачаем genesis.json и addrbook.json
 Выполните следующие команды:
 
 ```bash
@@ -119,7 +110,7 @@ wget -O $HOME/.lava/config/genesis.json https://server-2.itrocket.net/mainnet/la
 wget -O $HOME/.lava/config/addrbook.json  https://server-2.itrocket.net/mainnet/lava/addrbook.json
 ```
 
-## 8. Настройка Сервиса
+## 7. Настройка Сервиса
 
 ### Автозагрузка и работа ноды как сервис
 
@@ -157,7 +148,7 @@ WantedBy=multi-user.target
 sudo systemctl enable lava.service
 ```
 
-## 9. Настройка Cosmovisor
+## 8. Настройка Cosmovisor
   1. Создаём директории:
 ```bash
 mkdir -p ~/.lava/cosmovisor/genesis/bin
@@ -169,12 +160,12 @@ mkdir -p ~/.lava/cosmovisor/upgrades
 cp go/bin/lavad .lava/cosmovisor/genesis/bin/
 ```
 
-## 10. Скачиваем и распаковываем Snapshot/StateSync
+## 9. Скачиваем и распаковываем Snapshot/StateSync
 </br>
     
 <details>
   <summary>Использовать StateSync. Быстро, легко! Нажмите, чтобы показать</summary>
-  Выполните команду:
+  Выполните команду, после её выполнения, вы получите полностью работающую ноду! Только дайте ей время синхронизироваться.
 
   ``
   curl https://raw.githubusercontent.com/Dr0ff/Useful-scripts/refs/heads/main/lava_st_sync.sh | bash``
@@ -210,7 +201,7 @@ https://itrocket.net/services/mainnet/lava/#snap
 mv $HOME/.lava/priv_validator_state.json.backup $HOME/.lava/data/priv_validator_state.json
 ```
  
-## 11. Запуск и проверка ноды
+## 10. Запуск и проверка ноды
 
   1. Делаем пробный запуск ноды:
 ```bash
@@ -224,6 +215,18 @@ sudo systemctl start lava.service
 sudo journalctl -u lava -f --output cat
 ```
 </details>
+</br>
+<details>
+<summary>11. Сиды и Пиры! Эту секцию можно смело пропустить! Если есть Адрресбук, они не нужны</summary>
+
+```bash
+SEEDS="19822a55dcd3b5a4e8a4d4911d0b78e001b93cf7@lava-mainnet-seed.itrocket.net:28656"
+PEERS="0d67bedc7f929200d52c8724dfc50f848661f9ba@lava-mainnet-peer.itrocket.net:28656,8d28c38d956384510558664f5897a383b7529699@136.243.95.31:29156"
+sed -i -e "/^\[p2p\]/,/^\[/{s/^[[:space:]]*seeds *=.*/seeds = \"$SEEDS\"/}" \
+       -e "/^\[p2p\]/,/^\[/{s/^[[:space:]]*persistent_peers *=.*/persistent_peers = \"$PEERS\"/}" $HOME/.lava/config/config.toml
+```
+</details>
+
 
 ## Huge Thanks to ITROCKET for amazing tool and contributions!
 Check it out: [https://itrocket.net/](https://itrocket.net/)
