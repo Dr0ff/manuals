@@ -1,4 +1,4 @@
-# Установка ноды Lava Network
+# Установка ноды Lava Network | Спасибо ITROCKET
 
   ## 1. Устанавливаем Go v1.23.4
 
@@ -209,3 +209,6 @@ lavad start
 sudo systemctl start lava.service
 sudo journalctl -u lava -f --output cat
 ```
+
+## Huge Thanks to ITROCKET for amazing tool and contributions!
+Check it out: [https://itrocket.net/](https://itrocket.net/)
