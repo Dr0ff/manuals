@@ -173,7 +173,7 @@ cp go/bin/lavad .lava/cosmovisor/genesis/bin/
 </br>
     
 <details>
-  <summary>Использовать StateSync. Быстро (иногда), легко. Нажмите, чтобы показать</summary>
+  <summary>Использовать StateSync. Быстро, легко! Нажмите, чтобы показать</summary>
   Выполните команду:
 
   ``
