@@ -180,7 +180,7 @@ cp go/bin/lavad .lava/cosmovisor/genesis/bin/
   1. Останавливаем ноду и сохраняем файл ноды
 
 ```bash
-sudo systemctl stop lavad
+sudo systemctl stop lava.service
 cp $HOME/.lava/data/priv_validator_state.json $HOME/.lava/priv_validator_state.json.backup
 ```
 
