@@ -160,20 +160,21 @@ mkdir -p ~/.lava/cosmovisor/upgrades
 cp go/bin/lavad .lava/cosmovisor/genesis/bin/
 ```
 
-## 9. Скачиваем и распаковываем Snapshot/StateSync
+## 9. Синхронизируем ноду при помощи StateSync!
 </br>
     
 <details>
   <summary>Использовать StateSync. Быстро, легко! Нажмите, чтобы показать</summary>
   Выполните команду, после её выполнения, вы получите полностью работающую ноду! Только дайте ей время синхронизироваться.
 
-  ``
-  curl https://raw.githubusercontent.com/Dr0ff/Useful-scripts/refs/heads/main/lava_st_sync.sh | bash``
+  ```
+  curl https://raw.githubusercontent.com/Dr0ff/Useful-scripts/refs/heads/main/lava_st_sync.sh | bash
+```
  
  </details>
 
-</br>
 
+## Дополнительно! Если не делали предыдущий шаг!
  <details>
      <summary>Использовать Snapshot. Сложнее. Нажмите, чтобы показать</summary>
   1. Останавливаем ноду и сохраняем файл ноды
@@ -201,7 +202,7 @@ https://itrocket.net/services/mainnet/lava/#snap
 mv $HOME/.lava/priv_validator_state.json.backup $HOME/.lava/data/priv_validator_state.json
 ```
  
-## 10. Запуск и проверка ноды
+## Запуск и проверка ноды
 
   1. Делаем пробный запуск ноды:
 ```bash
@@ -217,7 +218,7 @@ sudo journalctl -u lava -f --output cat
 </details>
 </br>
 <details>
-<summary>11. Сиды и Пиры! Эту секцию можно смело пропустить! Если есть Адрресбук, они не нужны</summary>
+<summary>Сиды и Пиры! Эту секцию можно смело пропустить! Если есть Addrbook, они не нужны</summary>
 
 ```bash
 SEEDS="19822a55dcd3b5a4e8a4d4911d0b78e001b93cf7@lava-mainnet-seed.itrocket.net:28656"
