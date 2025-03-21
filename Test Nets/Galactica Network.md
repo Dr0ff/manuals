@@ -66,7 +66,7 @@ galacticad version --long
 galacticad init "YOUR_MONIKER" --chain-id galactica_9302-1
 ```
 
-###4.5. Создаём кошелёк:
+### Создаём кошелёк:
 Выполните следующую команду, заменив 'YOUR_WALLET_NAME' на желаемое имя вашего кошелька (например, galwallet)
 
 ```bash
@@ -75,50 +75,53 @@ galacticad keys add YOUR_WALLET_NAME --algo eth_secp256k1 --home $HOME/.galactic
 ```
 Придумайте и введите пароль, для хранителя ключей, повторите ввод пароля
 
-!Обязательно сохраните сид фразу!
+!!! Обязательно сохраните сид фразу !!!
 
 ## 5. Выполним настройки ноды
 
 1. Тонкие настройки работы ноды:
 
+config.toml
 ```bash
-sed -i \
--e 's/timeout_propose = .*/timeout_propose = "1s"/' \
--e 's/timeout_propose_delta = .*/timeout_propose_delta = "500ms"/' \
--e 's/timeout_prevote = .*/timeout_prevote = "1s"/' \
--e 's/timeout_prevote_delta = .*/timeout_prevote_delta = "500ms"/' \
--e 's/timeout_precommit = .*/timeout_precommit = "500ms"/' \
--e 's/timeout_precommit_delta = .*/timeout_precommit_delta = "1s"/' \
--e 's/timeout_commit = .*/timeout_commit = "15s"/' \
--e 's/^create_empty_blocks = .*/create_empty_blocks = true/' \
--e 's/^create_empty_blocks_interval = .*/create_empty_blocks_interval = "15s"/' \
--e 's/^timeout_broadcast_tx_commit = .*/timeout_broadcast_tx_commit = "151s"/' \
--e 's/skip_timeout_commit = .*/skip_timeout_commit = false/' \
-  $HOME/.lava/config/config.toml
+sed -i.backup 's?laddr = "tcp://127.0.0.1:26657"?laddr = "tcp://0.0.0.0:26657"?g' $HOME/.galactica/config/config.toml
+sed -i 's?proxy_app = "tcp://127.0.0.1:26658"?proxy_app = "tcp://0.0.0.0:26658"?g' $HOME/.galactica/config/config.toml
+sed -i 's?cors_allowed_origins = \[\]?cors_allowed_origins = \["*"\]?g' $HOME/.galactica/config/config.toml
+```
+app.toml
+
+```bash
+sed -i.backup '/\[api\]/,+3 s?enable = false?enable = true?' $HOME/.galactica/config/app.toml
+sed -i 's?address = "tcp://localhost:1317"?address = "tcp://0.0.0.0:1317"?' $HOME/.galactica/config/app.toml
+sed -i 's?enabled-unsafe-cors = false?enabled-unsafe-cors = true?' $HOME/.galactica/config/app.toml
+sed -i 's?address = "localhost:9090"?address = "0.0.0.0:9090"?' $HOME/.galactica/config/app.toml
+sed -i '/\[grpc-web\]/,+7 s?address = "localhost:9091"?address = "0.0.0.0:9091"?' $HOME/.galactica/config/app.toml
+sed -i 's?pruning = "default"?pruning = "nothing"?g' $HOME/.galactica/config/app.toml
+sed -i 's?minimum-gas-prices = ".*"?minimum-gas-prices = "10ugnet"?g' $HOME/.galactica/config/app.toml
 ```
 
-3. Настройка Pruning:
+#4. Настройка `minimum gas price` и отключение `indexer`
 
 ```bash
-sed -i -e "s/^pruning *=.*/pruning = \"custom\"/" $HOME/.lava/config/app.toml 
-sed -i -e "s/^pruning-keep-recent *=.*/pruning-keep-recent = \"100\"/" $HOME/.lava/config/app.toml
-sed -i -e "s/^pruning-interval *=.*/pruning-interval = \"19\"/" $HOME/.lava/config/app.toml
-```
-
-4. Настройка `minimum gas price` и отключение `indexer`
-
-```bash
-sed -i 's|minimum-gas-prices =.*|minimum-gas-prices = "0.000000001ulava"|g' $HOME/.lava/config/app.toml
-sed -i -e "s/prometheus = false/prometheus = true/" $HOME/.lava/config/config.toml
-sed -i -e "s/^indexer *=.*/indexer = \"null\"/" $HOME/.lava/config/config.toml
+#sed -i 's|minimum-gas-prices =.*|minimum-gas-prices = "0.000000001ulava"|g' $HOME/.lava/config/app.toml
+#sed -i -e "s/prometheus = false/prometheus = true/" $HOME/.lava/config/config.toml
+#sed -i -e "s/^indexer *=.*/indexer = \"null\"/" $HOME/.lava/config/config.toml
 ```
 
 ## 6. Скачаем genesis.json и addrbook.json
 Выполните следующие команды:
 
 ```bash
-wget -O $HOME/.lava/config/genesis.json https://server-2.itrocket.net/mainnet/lava/genesis.json
-wget -O $HOME/.lava/config/addrbook.json  https://server-2.itrocket.net/mainnet/lava/addrbook.json
+wget -O $HOME/.galactica/config/genesis.json https://raw.githubusercontent.com/Galactica-corp/networks/main/galactica_9302-1/genesis.json
+wget -O $HOME/.galactica/config/addrbook.json  https://server-2.itrocket.net/mainnet/lava/addrbook.json
+```
+
+## Сиды и пиры
+
+```bash
+SEEDS="c722e6dc5f762b0ef19be7f8cc8fd67cdf988946@seed01-reticulum.galactica.com:26656,8949fb771f2859248bf8b315b6f2934107f1cf5a@seed02-reticulum.galactica.com:26656,3afb7974589e431293a370d10f4dcdb73fa96e9b@seed03-reticulum.galactica.com:26656"
+PEERS=""
+sed -i -e "/^\[p2p\]/,/^\[/{s/^[[:space:]]*seeds *=.*/seeds = \"$SEEDS\"/}" \
+       -e "/^\[p2p\]/,/^\[/{s/^[[:space:]]*persistent_peers *=.*/persistent_peers = \"$PEERS\"/}" $HOME/.galactica/config/config.toml
 ```
 
 ## 7. Настройка Сервиса
@@ -232,10 +235,10 @@ sudo journalctl -u lava -f --output cat
 <summary>Сиды и Пиры! Эту секцию можно смело пропустить! Если есть Addrbook, они не нужны</summary>
 
 ```bash
-SEEDS="19822a55dcd3b5a4e8a4d4911d0b78e001b93cf7@lava-mainnet-seed.itrocket.net:28656"
-PEERS="0d67bedc7f929200d52c8724dfc50f848661f9ba@lava-mainnet-peer.itrocket.net:28656,8d28c38d956384510558664f5897a383b7529699@136.243.95.31:29156"
+SEEDS="c722e6dc5f762b0ef19be7f8cc8fd67cdf988946@seed01-reticulum.galactica.com:26656,8949fb771f2859248bf8b315b6f2934107f1cf5a@seed02-reticulum.galactica.com:26656,3afb7974589e431293a370d10f4dcdb73fa96e9b@seed03-reticulum.galactica.com:26656"
+PEERS=""
 sed -i -e "/^\[p2p\]/,/^\[/{s/^[[:space:]]*seeds *=.*/seeds = \"$SEEDS\"/}" \
-       -e "/^\[p2p\]/,/^\[/{s/^[[:space:]]*persistent_peers *=.*/persistent_peers = \"$PEERS\"/}" $HOME/.lava/config/config.toml
+       -e "/^\[p2p\]/,/^\[/{s/^[[:space:]]*persistent_peers *=.*/persistent_peers = \"$PEERS\"/}" $HOME/.galactica/config/config.toml
 ```
 </details>
 
