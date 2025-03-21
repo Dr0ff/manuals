@@ -70,12 +70,16 @@ galacticad init "YOUR_MONIKER" --chain-id galactica_9302-1
 Выполните следующую команду, заменив 'YOUR_WALLET_NAME' на желаемое имя вашего кошелька (например, galwallet)
 
 ```bash
-galacticad keys add YOUR_WALLET_NAME --algo eth_secp256k1 --home $HOME/.galactica --keyring
--backend file --keyring-dir $HOME/.galactica
+galacticad keys add YOUR_WALLET_NAME --algo eth_secp256k1 --home $HOME/.galactica --keyring-backend file --keyring-dir $HOME/.galactica
 ```
 Придумайте и введите пароль, для хранителя ключей, повторите ввод пароля
 
 !!! Обязательно сохраните сид фразу !!!
+
+Для работы с кошельком необходимо будет использовать флаги как в примере:
+
+galacticad keys list --home $HOME/.galactica --keyring-backend file
+
 
 ## 5. Выполним настройки ноды
 
@@ -95,24 +99,32 @@ sed -i 's?address = "tcp://localhost:1317"?address = "tcp://0.0.0.0:1317"?' $HOM
 sed -i 's?enabled-unsafe-cors = false?enabled-unsafe-cors = true?' $HOME/.galactica/config/app.toml
 sed -i 's?address = "localhost:9090"?address = "0.0.0.0:9090"?' $HOME/.galactica/config/app.toml
 sed -i '/\[grpc-web\]/,+7 s?address = "localhost:9091"?address = "0.0.0.0:9091"?' $HOME/.galactica/config/app.toml
-sed -i 's?pruning = "default"?pruning = "nothing"?g' $HOME/.galactica/config/app.toml
-sed -i 's?minimum-gas-prices = ".*"?minimum-gas-prices = "10ugnet"?g' $HOME/.galactica/config/app.toml
+#sed -i 's?pruning = "default"?pruning = "nothing"?g' $HOME/.galactica/config/app.toml
+```
+
+3. Настройка Pruning:
+
+```bash
+sed -i -e "s/^pruning *=.*/pruning = \"custom\"/" $HOME/.galactica/config/app.toml 
+sed -i -e "s/^pruning-keep-recent *=.*/pruning-keep-recent = \"100\"/" $HOME/.galactica/config/app.toml
+sed -i -e "s/^pruning-interval *=.*/pruning-interval = \"19\"/" $HOME/.galactica/config/app.toml
+sed -i -e "s/^indexer *=.*/indexer = \"null\"/" $HOME/.galactica/config/config.toml
 ```
 
 #4. Настройка `minimum gas price` и отключение `indexer`
 
 ```bash
-#sed -i 's|minimum-gas-prices =.*|minimum-gas-prices = "0.000000001ulava"|g' $HOME/.lava/config/app.toml
-#sed -i -e "s/prometheus = false/prometheus = true/" $HOME/.lava/config/config.toml
-#sed -i -e "s/^indexer *=.*/indexer = \"null\"/" $HOME/.lava/config/config.toml
+sed -i 's?minimum-gas-prices = ".*"?minimum-gas-prices = "10ugnet"?g' $HOME/.galactica/config/app.toml
+#sed -i -e "s/prometheus = false/prometheus = true/" $HOME/.galactica/config/config.toml
+#sed -i -e "s/^indexer *=.*/indexer = \"null\"/" $HOME/.galactica/config/config.toml
 ```
 
 ## 6. Скачаем genesis.json и addrbook.json
 Выполните следующие команды:
 
 ```bash
-wget -O $HOME/.galactica/config/genesis.json https://raw.githubusercontent.com/Galactica-corp/networks/main/galactica_9302-1/genesis.json
-wget -O $HOME/.galactica/config/addrbook.json  https://server-2.itrocket.net/mainnet/lava/addrbook.json
+wget -O $HOME/.galactica/config/addrbook.json "https://server-1.stavr.tech/Testnet/Galactica/addrbook.json"
+wget -O $HOME/.galactica/config/genesis.json "https://server-1.stavr.tech/Testnet/Galactica/genesis.json"
 ```
 
 ## Сиды и пиры
@@ -130,25 +142,25 @@ sed -i -e "/^\[p2p\]/,/^\[/{s/^[[:space:]]*seeds *=.*/seeds = \"$SEEDS\"/}" \
 
   1. Создайте файл следующей командой:
 ```bash
-sudo nano /etc/systemd/system/lava.service
+sudo nano /etc/systemd/system/galactica.service
 ```
   2. Вставьте в него содержимое приведённое ниже:</br>
   *Замените USER на имя своего пользователя!
 
 ```bash
 [Unit]
-Description="lava node"
+Description="Galactica node"
 After=network-online.target
 
 [Service]
 User=USER
-ExecStart=/home/USER/go/bin/cosmovisor start
+ExecStart=/home/USER/go/bin/galacticad start --chain-id galactica_9302-1
 Restart=always
 RestartSec=3
 LimitNOFILE=infinity
 LimitNPROC=infinity
-Environment="DAEMON_NAME=lavad"
-Environment="DAEMON_HOME=/home/USER/.lava"
+Environment="DAEMON_NAME=galacticad"
+Environment="DAEMON_HOME=/home/USER/.galactica"
 Environment="DAEMON_RESTART_AFTER_UPGRADE=true"
 Environment="DAEMON_ALLOW_DOWNLOAD_BINARIES=true"
 Environment="DAEMON_LOG_BUFFER_SIZE=512"
@@ -159,19 +171,19 @@ WantedBy=multi-user.target
   3. Выполните команду активации автозапуска:
 
 ```bash
-sudo systemctl enable lava.service
+sudo systemctl enable galactica.service
 ```
 
 ## 8. Настройка Cosmovisor
   1. Создаём директории:
 ```bash
-mkdir -p ~/.lava/cosmovisor/genesis/bin
-mkdir -p ~/.lava/cosmovisor/upgrades
+mkdir -p ~/.galactica/cosmovisor/genesis/bin
+mkdir -p ~/.galactica/cosmovisor/upgrades
 ```
 
   2. Копируем бинарник ноды в Cosmovisor
 ```bash
-cp go/bin/lavad .lava/cosmovisor/genesis/bin/
+cp go/bin/galacticad .galactica/cosmovisor/genesis/bin/
 ```
 
 ## 9. Синхронизируем ноду при помощи StateSync!
@@ -182,7 +194,7 @@ cp go/bin/lavad .lava/cosmovisor/genesis/bin/
   Выполните команду, после её выполнения, вы получите полностью работающую ноду! Только дайте ей время синхронизироваться.
 
   ```
-  curl https://raw.githubusercontent.com/Dr0ff/Useful-scripts/refs/heads/main/lava_st_sync.sh | bash
+  curl https://raw.githubusercontent.com/Dr0ff/Useful-scripts/refs/heads/main/Test%20Nets/galactica_st_sync.sh | bash
 ```
  
  </details>
@@ -194,40 +206,40 @@ cp go/bin/lavad .lava/cosmovisor/genesis/bin/
   1. Останавливаем ноду и сохраняем файл ноды
 
 ```bash
-sudo systemctl stop lava.service
-cp $HOME/.lava/data/priv_validator_state.json $HOME/.lava/priv_validator_state.json.backup
+sudo systemctl stop galactica.service
+cp $HOME/.galactica/data/priv_validator_state.json $HOME/.galactica/priv_validator_state.json.backup
 ```
 
   2. Выполняем команду очистки и сброса ноды
 
 ```bash
-lavad tendermint unsafe-reset-all --home $HOME/.lava --keep-addr-book
+galacticad tendermint unsafe-reset-all --home $HOME/.galactica --keep-addr-book
 ```
 
   3. Переходим по ссылке:</br>
   !!! КОПИРУЕМ И ВЫПОЛНЯЕМ ТОЛЬКО команду которая начинается с `curl https://....` !!!
 
 ```bash
-https://itrocket.net/services/mainnet/lava/#snap
+https://itrocket.net/services/mainnet/galactica/#snap
 ```
   
   3. Возвращаем сохранённый файл на место:
 ```bash
-mv $HOME/.lava/priv_validator_state.json.backup $HOME/.lava/data/priv_validator_state.json
+mv $HOME/.galactica/priv_validator_state.json.backup $HOME/.galactica/data/priv_validator_state.json
 ```
  
 ## Запуск и проверка ноды
 
   1. Делаем пробный запуск ноды:
 ```bash
-lavad start
+galacticad start
 ```
   ***Дождитесь пока начнётся синхронизация или даже пока нода полностью не синхронизируется!*
 
   2. Запустите ноду и просмотр логов:
 ```bash
-sudo systemctl start lava.service
-sudo journalctl -u lava -f --output cat
+sudo systemctl start galactica.service
+sudo journalctl -u galactica -f --output cat
 ```
 </details>
 </br>
