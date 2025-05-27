@@ -82,11 +82,11 @@ If you try to navigate to a directory that doesn't exist, you will receive an er
 ## ✏️ | Creating Directories
 <a name="#creating-directories"></a>
 To create directories, you use the **mkdir** command (short for make directory). For example:
-```bash
-mkdir work # Creates a directory named 'work' in the current directory.
-mkdir work/crypto # Creates a directory named 'crypto' inside the 'work' directory, assuming 'work' already exists in the current directory.
-```
-> **Warning:** IMPORTANT! If the parent directory (e.g., work in the second example mkdir work/crypto) does not exist, the terminal will issue an error, and the subdirectory (crypto) will not be created. (There are options for mkdir to create parent directories automatically, which you might learn later).
+
+`mkdir work`  *# Creates a directory named 'work' in the current directory.* <br>
+`mkdir work/crypto` *# Creates a directory named 'crypto' inside the 'work' directory, assuming 'work' already exists in the current directory.*
+
+> IMPORTANT! If the parent directory (e.g., work in the second example mkdir work/crypto) does not exist, the terminal will issue an error, and the subdirectory (crypto) will not be created. (There are options for mkdir to create parent directories automatically, which you might learn later).
 
 In the commands above, we used relative paths. This means the specified directories are created RELATIVE to the current (working) directory.
 
