@@ -82,26 +82,21 @@ If you try to navigate to a directory that doesn't exist, you will receive an er
 ---
 ## ✏️ | Creating Directories
 <a name="#creating-directories"></a>
-To create directories, you use the mkdir command (short for make directory). For example:
-
-Example commands:
+To create directories, you use the **mkdir** command (short for make directory). For example:
+```bash
 mkdir work # Creates a directory named 'work' in the current directory.
 mkdir work/crypto # Creates a directory named 'crypto' inside the 'work' directory, assuming 'work' already exists in the current directory.
-
-IMPORTANT! If the parent directory (e.g., work in the second example mkdir work/crypto) does not exist, the terminal will issue an error, and the subdirectory (crypto) will not be created. (There are options for mkdir to create parent directories automatically, which you might learn later).
+```
+> **Warning:** IMPORTANT! If the parent directory (e.g., work in the second example mkdir work/crypto) does not exist, the terminal will issue an error, and the subdirectory (crypto) will not be created. (There are options for mkdir to create parent directories automatically, which you might learn later).
 
 In the commands above, we used relative paths. This means the specified directories are created RELATIVE to the current (working) directory.
 
 You can also use an absolute path. In this case, the folder will be created at the specified location, provided that all preceding parent directories in the path exist.
 
 Example command:
+```bash
 mkdir /root/projects # Creates the 'projects' directory ONLY in the /root directory, regardless of which directory you are currently in.
+```
 
-📝 | Homework
-
-In your user's home directory (~), create a new folder. Choose a name yourself, preferably something short (e.g., my_stuff).
-Navigate into the folder you just created. Inside it, create another folder with an arbitrary name (e.g., project_alpha).
-Return to your home directory (cd ~ or just cd). From your home directory, create yet another new directory inside the one you created in task 2 (the sub-folder). For example, if you created ~/my_stuff/project_alpha, you would now create ~/my_stuff/project_alpha/notes while your current directory is ~. (Hope that's clear 😅)
-Determine the absolute path to the directory you created in task 3 (e.g., the notes directory).
-While you are in your home directory (~), determine at least two different relative paths to the directory you created in task 2 (e.g., project_alpha). List all you can find.
+---
 
