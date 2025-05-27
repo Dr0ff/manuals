@@ -1,5 +1,4 @@
 # Lesson 1: File System. Directories. Path (absolute and relative).
-*Material written by the author of the channel "Penguins fly to California"*
 
 ---
 ## 📚 | Table of Contents
@@ -17,7 +16,7 @@ The Linux file system starts with the **root directory**, which is denoted by `/
 
 Just so you know, "folder," "catalog," and "directory" all mean the same thing. I will use different terms to avoid too much repetition.
 All other directories are attached to the root directory. To draw an analogy, the directory structure is like a tree.
-
+<img src="https://img1.teletype.in/files/8c/c6/8cc648ba-1014-40a1-97f1-b532573d16c3.png" />
 The root directory contains various subdirectories, each performing a specific function. Let's look at some of them:
 
 * `/etc` — stores the main configuration files for software.
