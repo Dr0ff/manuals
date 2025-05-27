@@ -2,9 +2,9 @@
 
 ---
 ## 📚 | Table of Contents
-* [File System](#file-system)
-* [Navigating Directories](#navigating-directories)
-* [Creating Directories](#creating-directories)
+* File System
+* Navigating Directories
+* Creating Directories
 ---
 
 ## 📁 | File System
