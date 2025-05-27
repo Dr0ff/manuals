@@ -66,7 +66,18 @@ cd work              # Navigate to the 'work' directory located in the current d
 cd ..                # Navigate to the parent directory.
 cd ../../work        # First, go up two levels from the current directory, then enter the 'work' directory there.
 cd -                 # (Minus sign) Navigate to the previous directory you were in.
+```
+If you execute cd without any parameters, you will be taken to your home directory. This is very convenient.
 
+How do you find out which directory you are currently in? (In case you get lost!)
+There is a special command for this:
+pwd (short for print working directory).
+
+Example command:
+pwd
+
+You can also often see the current (working) directory as part of the command prompt, but we will cover the command prompt itself in a future lesson.
+If you try to navigate to a directory that doesn't exist, you will receive an error message (which is logical).
 
 ---------------------
 
