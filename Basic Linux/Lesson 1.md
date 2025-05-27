@@ -5,7 +5,6 @@
 * [File System](#file-system)
 * [Navigating Directories](#navigating-directories)
 * [Creating Directories](#creating-directories)
-* [Homework](#homework)
 ---
 
 ## 📁 | File System
