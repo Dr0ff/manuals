@@ -47,7 +47,7 @@ go install github.com/cosmos/cosmos-sdk/cosmovisor/cmd/cosmovisor@v1.0.0
 ```bash
 git clone https://github.com/lavanet/lava
 cd lava/
-git checkout v5.2.0
+git checkout v5.3.0
 make install-all
 ```
 
