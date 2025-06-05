@@ -106,8 +106,8 @@ sed -i -e "s/^indexer *=.*/indexer = \"null\"/" $HOME/.lava/config/config.toml
 Выполните следующие команды:
 
 ```bash
-wget -O $HOME/.lava/config/genesis.json https://server-2.itrocket.net/mainnet/lava/genesis.json
-wget -O $HOME/.lava/config/addrbook.json  https://server-2.itrocket.net/mainnet/lava/addrbook.json
+wget -O $HOME/.lava/config/genesis.json https://snapshots.polkachu.com/genesis/lava/genesis.json --inet4-only
+wget -O $HOME/.lava/config/addrbook.json https://snapshots.polkachu.com/addrbook/lava/addrbook.json --inet4-only
 ```
 
 ## 7. Настройка Сервиса
