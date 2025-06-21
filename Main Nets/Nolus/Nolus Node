@@ -1,0 +1,42 @@
+# Установка ноды Nolus Network
+### Убедитесь, что ваш сервер правильно подготовлен: [Инструкция и скрипт проверки](https://github.com/ptzruslan/tools)
+  ## 1. Устанавливаем Go v1.23.4
+
+**Если Go ещё не установлен, выполните команды по установке и настройке GO:*
+
+```bash
+sudo rm -rvf /usr/local/go/
+wget https://golang.org/dl/go1.23.4.linux-amd64.tar.gz
+sudo tar -C /usr/local -xzf go1.23.4.linux-amd64.tar.gz
+rm go1.23.4.linux-amd64.tar.gz
+```
+
+## 2. Настраиваем Go
+
+Откройте файл командой:
+```bash
+nano ~/.profile
+```
+
+И вставьте в него следующий текст:
+
+```bash
+export GOROOT=/usr/local/go
+export GOPATH=$HOME/go
+export GO111MODULE=on
+export PATH=$PATH:/usr/local/go/bin:$HOME/go/bin
+```
+
+## 3. Устанавливаем Cosmosvisor
+
+```bash
+go install github.com/cosmos/cosmos-sdk/cosmovisor/cmd/cosmovisor@v1.0.0
+```
+## 4. Устанавливаем Nolus
+
+```
+git clone https://github.com/nolus-protocol/nolus-core nolus
+cd nolus
+git checkout v0.8.0
+make install
+```
