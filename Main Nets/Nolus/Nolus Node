@@ -61,18 +61,16 @@ nolusd init "YOUR_MONIKER" --chain-id pirin-1
 3. Настройка Pruning и соединения:
 
 ```bash
-sed -i \
--e "s/^pruning *=.*/pruning = \"custom\"/' \
--e 's/^pruning-keep-recent *=.*/pruning-keep-recent = \"100\"/' \
--e 's/^pruning-interval *=.*/pruning-interval = \"10\"/' \
--e 's/^max_num_outbound_peers *=./max_num_outbound_peers = 40/' \
-$HOME/.nolus/config/app.toml
+sed -i -e "s/^pruning *=.*/pruning = \"custom\"/" $HOME/.nolus/config/app.toml 
+sed -i -e "s/^pruning-keep-recent *=.*/pruning-keep-recent = \"100\"/" $HOME/.nolus/config/app.toml
+sed -i -e "s/^pruning-interval *=.*/pruning-interval = \"19\"/" $HOME/.nolus/config/app.toml
 ```
 
 4. Отключение `indexer`
 
 ```bash
 sed -i -e "s/^indexer *=.*/indexer = \"null\"/" $HOME/.nolus/config/config.toml
+sed -i -e 's/^max_num_outbound_peers *=.*/max_num_outbound_peers = 40/' $HOME/.nolus/config/config.toml
 ```
 
 ## 6. Скачаем genesis.json и addrbook.json
@@ -89,7 +87,7 @@ wget -O $HOME/.nolus/config/addrbook.json https://snapshots.polkachu.com/addrboo
 
   1. Создайте файл следующей командой:
 ```bash
-sudo nano /etc/systemd/system/lava.service
+sudo nano /etc/systemd/system/nolus.service
 ```
   2. Вставьте в него содержимое приведённое ниже:</br>
   *Замените USER на имя своего пользователя!
@@ -112,25 +110,31 @@ Environment="DAEMON_RESTART_AFTER_UPGRADE=true"
 Environment="DAEMON_ALLOW_DOWNLOAD_BINARIES=true"
 Environment="DAEMON_LOG_BUFFER_SIZE=512"
 Environment="UNSAFE_SKIP_BACKUP=true"
+
+MemoryAccounting=true
+MemoryMax=3.5G
+#MemoryHigh=800M
+MemorySwapMax=0
+
 [Install]
 WantedBy=multi-user.target
 ```
   3. Выполните команду активации автозапуска:
 
 ```bash
-sudo systemctl enable lava.service
+sudo systemctl enable nolus.service
 ```
 
 ## 8. Настройка Cosmovisor
   1. Создаём директории:
 ```bash
-mkdir -p ~/.lava/cosmovisor/genesis/bin
-mkdir -p ~/.lava/cosmovisor/upgrades
+mkdir -p ~/.nolus/cosmovisor/genesis/bin
+mkdir -p ~/.nolus/cosmovisor/upgrades
 ```
 
   2. Копируем бинарник ноды в Cosmovisor
 ```bash
-cp go/bin/lavad .lava/cosmovisor/genesis/bin/
+cp go/bin/nolusd .nolus/cosmovisor/genesis/bin/
 ```
 
 ## 9. Синхронизируем ноду при помощи StateSync!
@@ -153,14 +157,14 @@ cp go/bin/lavad .lava/cosmovisor/genesis/bin/
   1. Останавливаем ноду и сохраняем файл ноды
 
 ```bash
-sudo systemctl stop lava.service
-cp $HOME/.lava/data/priv_validator_state.json $HOME/.lava/priv_validator_state.json.backup
+sudo systemctl stop nolus.service
+cp $HOME/.nolus/data/priv_validator_state.json $HOME/.nolus/priv_validator_state.json.backup
 ```
 
   2. Выполняем команду очистки и сброса ноды
 
 ```bash
-lavad tendermint unsafe-reset-all --home $HOME/.lava --keep-addr-book
+nolus tendermint unsafe-reset-all --home $HOME/.nolus --keep-addr-book
 ```
 
   3. Переходим по ссылке:</br>
@@ -172,21 +176,21 @@ https://itrocket.net/services/mainnet/lava/#snap
   
   3. Возвращаем сохранённый файл на место:
 ```bash
-mv $HOME/.lava/priv_validator_state.json.backup $HOME/.lava/data/priv_validator_state.json
+mv $HOME/.nolus/priv_validator_state.json.backup $HOME/.nolus/data/priv_validator_state.json
 ```
  
 ## Запуск и проверка ноды
 
   1. Делаем пробный запуск ноды:
 ```bash
-lavad start
+nolusd start
 ```
   ***Дождитесь пока начнётся синхронизация или даже пока нода полностью не синхронизируется!*
 
   2. Запустите ноду и просмотр логов:
 ```bash
-sudo systemctl start lava.service
-sudo journalctl -u lava -f --output cat
+sudo systemctl start nolus.service
+sudo journalctl -u nolus -f --output cat
 ```
 </details>
 </br>
@@ -197,7 +201,7 @@ sudo journalctl -u lava -f --output cat
 SEEDS="19822a55dcd3b5a4e8a4d4911d0b78e001b93cf7@lava-mainnet-seed.itrocket.net:28656"
 PEERS="0d67bedc7f929200d52c8724dfc50f848661f9ba@lava-mainnet-peer.itrocket.net:28656,8d28c38d956384510558664f5897a383b7529699@136.243.95.31:29156"
 sed -i -e "/^\[p2p\]/,/^\[/{s/^[[:space:]]*seeds *=.*/seeds = \"$SEEDS\"/}" \
-       -e "/^\[p2p\]/,/^\[/{s/^[[:space:]]*persistent_peers *=.*/persistent_peers = \"$PEERS\"/}" $HOME/.lava/config/config.toml
+       -e "/^\[p2p\]/,/^\[/{s/^[[:space:]]*persistent_peers *=.*/persistent_peers = \"$PEERS\"/}" $HOME/.nolus/config/config.toml
 ```
 </details>
 
