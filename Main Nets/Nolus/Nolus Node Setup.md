@@ -112,7 +112,7 @@ Environment="DAEMON_LOG_BUFFER_SIZE=512"
 Environment="UNSAFE_SKIP_BACKUP=true"
 
 MemoryAccounting=true
-MemoryMax=3.5G
+MemoryMax=5G
 #MemoryHigh=800M
 MemorySwapMax=0
 
@@ -205,3 +205,29 @@ sed -i -e "/^\[p2p\]/,/^\[/{s/^[[:space:]]*seeds *=.*/seeds = \"$SEEDS\"/}" \
 ```
 </details>
 
+## Запуск Валидатора:
+Создаём файл, validator.json
+
+```
+{
+	"pubkey": {"@type":"/cosmos.crypto.ed25519.PubKey","key":"oWg2LF405Jcm2vXV+2v4fnjodh6aafuIdeoW+rUw="},
+	"amount": "1000000unolus",
+	"moniker": "myvalidator",
+	"identity": "(ex. UPort or Keybase)",
+	"website": "validator's (optional) website",
+	"security": "validator's (optional) security contact email",
+	"details": "validator's (optional) details",
+	"commission-rate": "0.1",
+	"commission-max-rate": "0.2",
+	"commission-max-change-rate": "0.01",
+	"min-self-delegation": "1"
+}
+```
+Где редактируем параметры как вам необходимо.
+
+Ваш "pubkey" можно взять выполнив команду: `nolusd tendermint show-validator`
+
+Далее можно отправлять транзакцию на создание валидатора:
+```
+nolusd tx staking create-validator validator.json --from wallet --chain-id pirin-1 --gas=auto --fees 700unls --gas-adjustment="1.5
+```
