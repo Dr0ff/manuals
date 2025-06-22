@@ -77,7 +77,7 @@ sed -i -e 's/^max_num_outbound_peers *=.*/max_num_outbound_peers = 40/' $HOME/.n
 Выполните следующие команды:
 
 ```bash
-wget -O $HOME/.nolus/config/genesis.json https://snapshots.polkachu.com/genesis/nolus/genesis.json --inet4-only
+wget -O $HOME/.nolus/config/genesis.json https://raw.githubusercontent.com/nolus-protocol/nolus-networks/main/mainnet/pirin-1/genesis.json --inet4-only
 wget -O $HOME/.nolus/config/addrbook.json https://snapshots.polkachu.com/addrbook/nolus/addrbook.json --inet4-only
 ```
 
