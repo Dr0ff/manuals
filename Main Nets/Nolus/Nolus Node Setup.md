@@ -206,7 +206,7 @@ sed -i -e "/^\[p2p\]/,/^\[/{s/^[[:space:]]*seeds *=.*/seeds = \"$SEEDS\"/}" \
 </details>
 
 ## Запуск Валидатора:
-Создаём файл, validator.json
+Создаём файл, `nano validator.json` вставляем содержимое:
 
 ```
 {
@@ -223,7 +223,7 @@ sed -i -e "/^\[p2p\]/,/^\[/{s/^[[:space:]]*seeds *=.*/seeds = \"$SEEDS\"/}" \
 	"min-self-delegation": "1"
 }
 ```
-Где редактируем параметры как вам необходимо.
+Редактируем параметры как вам необходимо.
 
 Ваш "pubkey" можно взять выполнив команду: `nolusd tendermint show-validator`
 
