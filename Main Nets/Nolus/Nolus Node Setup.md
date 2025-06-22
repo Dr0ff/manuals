@@ -145,7 +145,7 @@ cp go/bin/nolusd .nolus/cosmovisor/genesis/bin/
   Выполните команду, после её выполнения, вы получите полностью работающую ноду! Только дайте ей время синхронизироваться.
 
   ```
-  curl https://raw.githubusercontent.com/Dr0ff/Useful-scripts/refs/heads/main/lava_st_sync.sh | bash
+  curl https://raw.githubusercontent.com/Dr0ff/manuals/refs/heads/main/Main%20Nets/Nolus/nolus_state_sync.sh | bash
 ```
  
  </details>
