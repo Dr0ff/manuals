@@ -77,7 +77,7 @@ sed -i -e 's/^max_num_outbound_peers *=.*/max_num_outbound_peers = 40/' $HOME/.c
 Выполните следующие команды:
 
 ```bash
-wget -O $HOME/.chihuahuad/config/genesis.json https://snapshots.polkachu.com/genesis/chihuahua/genesis.json --inet4-only
+wget -O $HOME/.chihuahuad/config/genesis.json https://raw.githubusercontent.com/ChihuahuaChain/chihuahua/main/mainnet/genesis.json
 wget -O $HOME/.chihuahuad/config/addrbook.json https://snapshots.polkachu.com/addrbook/chihuahua/addrbook.json --inet4-only
 ```
 
